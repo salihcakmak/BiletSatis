@@ -1,0 +1,686 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OtobusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Biletler">
+          <Key>
+            <PropertyRef Name="YolcuID" />
+          </Key>
+          <Property Name="YolcuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeferID" Type="int" />
+          <Property Name="IslemZamani" Type="datetime" />
+          <Property Name="KoltukNo" Type="int" />
+          <Property Name="YolcuCinsiyet" Type="char" MaxLength="5" />
+          <Property Name="YolcuAd" Type="varchar" MaxLength="30" />
+          <Property Name="YolcuSoyad" Type="varchar" MaxLength="30" />
+          <Property Name="Ucret" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Calisanlar">
+          <Key>
+            <PropertyRef Name="PersonelID" />
+          </Key>
+          <Property Name="PersonelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="varchar" MaxLength="30" />
+          <Property Name="Soyad" Type="varchar" MaxLength="30" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telefon" Type="numeric" Precision="11" Scale="0" />
+          <Property Name="CalisanTipID" Type="int" />
+        </EntityType>
+        <EntityType Name="CalisanTipleri">
+          <Key>
+            <PropertyRef Name="CalisanTipID" />
+          </Key>
+          <Property Name="CalisanTipID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CalisanTipAdi" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="Adı" Type="varchar" MaxLength="50" />
+          <Property Name="Soyadı" Type="varchar" MaxLength="50" />
+          <Property Name="PIN" Type="int" />
+        </EntityType>
+        <EntityType Name="Markalar">
+          <Key>
+            <PropertyRef Name="MarkaId" />
+          </Key>
+          <Property Name="MarkaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MarkaAdi" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Musteriler">
+          <Key>
+            <PropertyRef Name="MusteriID" />
+          </Key>
+          <Property Name="MusteriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="varchar" MaxLength="30" />
+          <Property Name="Soyad" Type="varchar" MaxLength="30" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telefon" Type="numeric" Precision="11" Scale="0" />
+          <Property Name="Cinsiyet" Type="char" MaxLength="5" />
+          <Property Name="SehirID" Type="int" />
+        </EntityType>
+        <EntityType Name="Otobusler">
+          <Key>
+            <PropertyRef Name="OtobusID" />
+          </Key>
+          <Property Name="OtobusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Plaka" Type="char" MaxLength="7" />
+          <Property Name="KoltukSayisi" Type="int" />
+          <Property Name="MarkaID" Type="int" />
+        </EntityType>
+        <EntityType Name="Seferler">
+          <Key>
+            <PropertyRef Name="SeferID" />
+          </Key>
+          <Property Name="SeferID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KalkisSehirID" Type="int" />
+          <Property Name="VarisSehirID" Type="int" />
+          <Property Name="OtobusID" Type="int" />
+          <Property Name="SoforID" Type="int" />
+          <Property Name="MuavinID" Type="int" />
+          <Property Name="KalkisZamani" Type="datetime" />
+          <Property Name="TahminiSure" Type="nchar" MaxLength="10" />
+          <Property Name="BiletTutari" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Sehirler">
+          <Key>
+            <PropertyRef Name="SehirID" />
+          </Key>
+          <Property Name="SehirID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SehirAdi" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_Biletler_musteriler">
+          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="1" />
+          <End Role="Biletler" Type="Self.Biletler" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Musteriler">
+              <PropertyRef Name="MusteriID" />
+            </Principal>
+            <Dependent Role="Biletler">
+              <PropertyRef Name="YolcuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Biletler_seferler">
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="0..1" />
+          <End Role="Biletler" Type="Self.Biletler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seferler">
+              <PropertyRef Name="SeferID" />
+            </Principal>
+            <Dependent Role="Biletler">
+              <PropertyRef Name="SeferID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Calisanlar_calisantipleri">
+          <End Role="CalisanTipleri" Type="Self.CalisanTipleri" Multiplicity="0..1" />
+          <End Role="Calisanlar" Type="Self.Calisanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalisanTipleri">
+              <PropertyRef Name="CalisanTipID" />
+            </Principal>
+            <Dependent Role="Calisanlar">
+              <PropertyRef Name="CalisanTipID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Musteriler_sehirler">
+          <End Role="Sehirler" Type="Self.Sehirler" Multiplicity="0..1" />
+          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sehirler">
+              <PropertyRef Name="SehirID" />
+            </Principal>
+            <Dependent Role="Musteriler">
+              <PropertyRef Name="SehirID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Otobusler_markalar">
+          <End Role="Markalar" Type="Self.Markalar" Multiplicity="0..1" />
+          <End Role="Otobusler" Type="Self.Otobusler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Markalar">
+              <PropertyRef Name="MarkaId" />
+            </Principal>
+            <Dependent Role="Otobusler">
+              <PropertyRef Name="MarkaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_calisanlar">
+          <End Role="Calisanlar" Type="Self.Calisanlar" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calisanlar">
+              <PropertyRef Name="PersonelID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="SoforID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_calisanlar1">
+          <End Role="Calisanlar" Type="Self.Calisanlar" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calisanlar">
+              <PropertyRef Name="PersonelID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="MuavinID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_otobusler">
+          <End Role="Otobusler" Type="Self.Otobusler" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Otobusler">
+              <PropertyRef Name="OtobusID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="OtobusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_sehirler">
+          <End Role="Sehirler" Type="Self.Sehirler" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sehirler">
+              <PropertyRef Name="SehirID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="KalkisSehirID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_sehirler1">
+          <End Role="Sehirler" Type="Self.Sehirler" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sehirler">
+              <PropertyRef Name="SehirID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="VarisSehirID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OtobusModelStoreContainer">
+          <EntitySet Name="Biletler" EntityType="Self.Biletler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Calisanlar" EntityType="Self.Calisanlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CalisanTipleri" EntityType="Self.CalisanTipleri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Markalar" EntityType="Self.Markalar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Musteriler" EntityType="Self.Musteriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Otobusler" EntityType="Self.Otobusler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seferler" EntityType="Self.Seferler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sehirler" EntityType="Self.Sehirler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Biletler_musteriler" Association="Self.FK_Biletler_musteriler">
+            <End Role="Musteriler" EntitySet="Musteriler" />
+            <End Role="Biletler" EntitySet="Biletler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Biletler_seferler" Association="Self.FK_Biletler_seferler">
+            <End Role="Seferler" EntitySet="Seferler" />
+            <End Role="Biletler" EntitySet="Biletler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Calisanlar_calisantipleri" Association="Self.FK_Calisanlar_calisantipleri">
+            <End Role="CalisanTipleri" EntitySet="CalisanTipleri" />
+            <End Role="Calisanlar" EntitySet="Calisanlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Musteriler_sehirler" Association="Self.FK_Musteriler_sehirler">
+            <End Role="Sehirler" EntitySet="Sehirler" />
+            <End Role="Musteriler" EntitySet="Musteriler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Otobusler_markalar" Association="Self.FK_Otobusler_markalar">
+            <End Role="Markalar" EntitySet="Markalar" />
+            <End Role="Otobusler" EntitySet="Otobusler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_calisanlar" Association="Self.FK_Seferler_calisanlar">
+            <End Role="Calisanlar" EntitySet="Calisanlar" />
+            <End Role="Seferler" EntitySet="Seferler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_calisanlar1" Association="Self.FK_Seferler_calisanlar1">
+            <End Role="Calisanlar" EntitySet="Calisanlar" />
+            <End Role="Seferler" EntitySet="Seferler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_otobusler" Association="Self.FK_Seferler_otobusler">
+            <End Role="Otobusler" EntitySet="Otobusler" />
+            <End Role="Seferler" EntitySet="Seferler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_sehirler" Association="Self.FK_Seferler_sehirler">
+            <End Role="Sehirler" EntitySet="Sehirler" />
+            <End Role="Seferler" EntitySet="Seferler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_sehirler1" Association="Self.FK_Seferler_sehirler1">
+            <End Role="Sehirler" EntitySet="Sehirler" />
+            <End Role="Seferler" EntitySet="Seferler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OtobusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Biletler">
+          <Key>
+            <PropertyRef Name="YolcuID" />
+          </Key>
+          <Property Name="YolcuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeferID" Type="Int32" />
+          <Property Name="IslemZamani" Type="DateTime" Precision="3" />
+          <Property Name="KoltukNo" Type="Int32" />
+          <Property Name="YolcuCinsiyet" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="YolcuAd" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="YolcuSoyad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Ucret" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Musteriler" Relationship="Self.FK_Biletler_musteriler" FromRole="Biletler" ToRole="Musteriler" />
+          <NavigationProperty Name="Seferler" Relationship="Self.FK_Biletler_seferler" FromRole="Biletler" ToRole="Seferler" />
+        </EntityType>
+        <EntityType Name="Calisanlar">
+          <Key>
+            <PropertyRef Name="PersonelID" />
+          </Key>
+          <Property Name="PersonelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefon" Type="Decimal" Precision="11" Scale="0" />
+          <Property Name="CalisanTipID" Type="Int32" />
+          <NavigationProperty Name="CalisanTipleri" Relationship="Self.FK_Calisanlar_calisantipleri" FromRole="Calisanlar" ToRole="CalisanTipleri" />
+          <NavigationProperty Name="Seferlers" Relationship="Self.FK_Seferler_calisanlar" FromRole="Calisanlar" ToRole="Seferler" />
+          <NavigationProperty Name="Seferlers1" Relationship="Self.FK_Seferler_calisanlar1" FromRole="Calisanlar" ToRole="Seferler" />
+        </EntityType>
+        <EntityType Name="CalisanTipleri">
+          <Key>
+            <PropertyRef Name="CalisanTipID" />
+          </Key>
+          <Property Name="CalisanTipID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CalisanTipAdi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Calisanlars" Relationship="Self.FK_Calisanlar_calisantipleri" FromRole="CalisanTipleri" ToRole="Calisanlar" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Adı" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Soyadı" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PIN" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Markalar">
+          <Key>
+            <PropertyRef Name="MarkaId" />
+          </Key>
+          <Property Name="MarkaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MarkaAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Otobuslers" Relationship="Self.FK_Otobusler_markalar" FromRole="Markalar" ToRole="Otobusler" />
+        </EntityType>
+        <EntityType Name="Musteriler">
+          <Key>
+            <PropertyRef Name="MusteriID" />
+          </Key>
+          <Property Name="MusteriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefon" Type="Decimal" Precision="11" Scale="0" />
+          <Property Name="Cinsiyet" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="SehirID" Type="Int32" />
+          <NavigationProperty Name="Biletler" Relationship="Self.FK_Biletler_musteriler" FromRole="Musteriler" ToRole="Biletler" />
+          <NavigationProperty Name="Sehirler" Relationship="Self.FK_Musteriler_sehirler" FromRole="Musteriler" ToRole="Sehirler" />
+        </EntityType>
+        <EntityType Name="Otobusler">
+          <Key>
+            <PropertyRef Name="OtobusID" />
+          </Key>
+          <Property Name="OtobusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Plaka" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="KoltukSayisi" Type="Int32" />
+          <Property Name="MarkaID" Type="Int32" />
+          <NavigationProperty Name="Markalar" Relationship="Self.FK_Otobusler_markalar" FromRole="Otobusler" ToRole="Markalar" />
+          <NavigationProperty Name="Seferlers" Relationship="Self.FK_Seferler_otobusler" FromRole="Otobusler" ToRole="Seferler" />
+        </EntityType>
+        <EntityType Name="Seferler">
+          <Key>
+            <PropertyRef Name="SeferID" />
+          </Key>
+          <Property Name="SeferID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KalkisSehirID" Type="Int32" />
+          <Property Name="VarisSehirID" Type="Int32" />
+          <Property Name="OtobusID" Type="Int32" />
+          <Property Name="SoforID" Type="Int32" />
+          <Property Name="MuavinID" Type="Int32" />
+          <Property Name="KalkisZamani" Type="DateTime" Precision="3" />
+          <Property Name="TahminiSure" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="BiletTutari" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Biletlers" Relationship="Self.FK_Biletler_seferler" FromRole="Seferler" ToRole="Biletler" />
+          <NavigationProperty Name="Calisanlar" Relationship="Self.FK_Seferler_calisanlar" FromRole="Seferler" ToRole="Calisanlar" />
+          <NavigationProperty Name="Calisanlar1" Relationship="Self.FK_Seferler_calisanlar1" FromRole="Seferler" ToRole="Calisanlar" />
+          <NavigationProperty Name="Otobusler" Relationship="Self.FK_Seferler_otobusler" FromRole="Seferler" ToRole="Otobusler" />
+          <NavigationProperty Name="Sehirler" Relationship="Self.FK_Seferler_sehirler" FromRole="Seferler" ToRole="Sehirler" />
+          <NavigationProperty Name="Sehirler1" Relationship="Self.FK_Seferler_sehirler1" FromRole="Seferler" ToRole="Sehirler" />
+        </EntityType>
+        <EntityType Name="Sehirler">
+          <Key>
+            <PropertyRef Name="SehirID" />
+          </Key>
+          <Property Name="SehirID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SehirAdi" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Musterilers" Relationship="Self.FK_Musteriler_sehirler" FromRole="Sehirler" ToRole="Musteriler" />
+          <NavigationProperty Name="Seferlers" Relationship="Self.FK_Seferler_sehirler" FromRole="Sehirler" ToRole="Seferler" />
+          <NavigationProperty Name="Seferlers1" Relationship="Self.FK_Seferler_sehirler1" FromRole="Sehirler" ToRole="Seferler" />
+        </EntityType>
+        <Association Name="FK_Biletler_musteriler">
+          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="1" />
+          <End Role="Biletler" Type="Self.Biletler" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Musteriler">
+              <PropertyRef Name="MusteriID" />
+            </Principal>
+            <Dependent Role="Biletler">
+              <PropertyRef Name="YolcuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Biletler_seferler">
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="0..1" />
+          <End Role="Biletler" Type="Self.Biletler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seferler">
+              <PropertyRef Name="SeferID" />
+            </Principal>
+            <Dependent Role="Biletler">
+              <PropertyRef Name="SeferID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Calisanlar_calisantipleri">
+          <End Role="CalisanTipleri" Type="Self.CalisanTipleri" Multiplicity="0..1" />
+          <End Role="Calisanlar" Type="Self.Calisanlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalisanTipleri">
+              <PropertyRef Name="CalisanTipID" />
+            </Principal>
+            <Dependent Role="Calisanlar">
+              <PropertyRef Name="CalisanTipID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_calisanlar">
+          <End Role="Calisanlar" Type="Self.Calisanlar" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calisanlar">
+              <PropertyRef Name="PersonelID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="SoforID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_calisanlar1">
+          <End Role="Calisanlar" Type="Self.Calisanlar" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calisanlar">
+              <PropertyRef Name="PersonelID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="MuavinID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Otobusler_markalar">
+          <End Role="Markalar" Type="Self.Markalar" Multiplicity="0..1" />
+          <End Role="Otobusler" Type="Self.Otobusler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Markalar">
+              <PropertyRef Name="MarkaId" />
+            </Principal>
+            <Dependent Role="Otobusler">
+              <PropertyRef Name="MarkaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Musteriler_sehirler">
+          <End Role="Sehirler" Type="Self.Sehirler" Multiplicity="0..1" />
+          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sehirler">
+              <PropertyRef Name="SehirID" />
+            </Principal>
+            <Dependent Role="Musteriler">
+              <PropertyRef Name="SehirID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_otobusler">
+          <End Role="Otobusler" Type="Self.Otobusler" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Otobusler">
+              <PropertyRef Name="OtobusID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="OtobusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_sehirler">
+          <End Role="Sehirler" Type="Self.Sehirler" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sehirler">
+              <PropertyRef Name="SehirID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="KalkisSehirID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seferler_sehirler1">
+          <End Role="Sehirler" Type="Self.Sehirler" Multiplicity="0..1" />
+          <End Role="Seferler" Type="Self.Seferler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sehirler">
+              <PropertyRef Name="SehirID" />
+            </Principal>
+            <Dependent Role="Seferler">
+              <PropertyRef Name="VarisSehirID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OtobusEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Biletlers" EntityType="Self.Biletler" />
+          <EntitySet Name="Calisanlars" EntityType="Self.Calisanlar" />
+          <EntitySet Name="CalisanTipleris" EntityType="Self.CalisanTipleri" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Markalars" EntityType="Self.Markalar" />
+          <EntitySet Name="Musterilers" EntityType="Self.Musteriler" />
+          <EntitySet Name="Otobuslers" EntityType="Self.Otobusler" />
+          <EntitySet Name="Seferlers" EntityType="Self.Seferler" />
+          <EntitySet Name="Sehirlers" EntityType="Self.Sehirler" />
+          <AssociationSet Name="FK_Biletler_musteriler" Association="Self.FK_Biletler_musteriler">
+            <End Role="Musteriler" EntitySet="Musterilers" />
+            <End Role="Biletler" EntitySet="Biletlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Biletler_seferler" Association="Self.FK_Biletler_seferler">
+            <End Role="Seferler" EntitySet="Seferlers" />
+            <End Role="Biletler" EntitySet="Biletlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Calisanlar_calisantipleri" Association="Self.FK_Calisanlar_calisantipleri">
+            <End Role="CalisanTipleri" EntitySet="CalisanTipleris" />
+            <End Role="Calisanlar" EntitySet="Calisanlars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_calisanlar" Association="Self.FK_Seferler_calisanlar">
+            <End Role="Calisanlar" EntitySet="Calisanlars" />
+            <End Role="Seferler" EntitySet="Seferlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_calisanlar1" Association="Self.FK_Seferler_calisanlar1">
+            <End Role="Calisanlar" EntitySet="Calisanlars" />
+            <End Role="Seferler" EntitySet="Seferlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Otobusler_markalar" Association="Self.FK_Otobusler_markalar">
+            <End Role="Markalar" EntitySet="Markalars" />
+            <End Role="Otobusler" EntitySet="Otobuslers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Musteriler_sehirler" Association="Self.FK_Musteriler_sehirler">
+            <End Role="Sehirler" EntitySet="Sehirlers" />
+            <End Role="Musteriler" EntitySet="Musterilers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_otobusler" Association="Self.FK_Seferler_otobusler">
+            <End Role="Otobusler" EntitySet="Otobuslers" />
+            <End Role="Seferler" EntitySet="Seferlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_sehirler" Association="Self.FK_Seferler_sehirler">
+            <End Role="Sehirler" EntitySet="Sehirlers" />
+            <End Role="Seferler" EntitySet="Seferlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seferler_sehirler1" Association="Self.FK_Seferler_sehirler1">
+            <End Role="Sehirler" EntitySet="Sehirlers" />
+            <End Role="Seferler" EntitySet="Seferlers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OtobusModelStoreContainer" CdmEntityContainer="OtobusEntities">
+          <EntitySetMapping Name="Biletlers">
+            <EntityTypeMapping TypeName="OtobusModel.Biletler">
+              <MappingFragment StoreEntitySet="Biletler">
+                <ScalarProperty Name="YolcuID" ColumnName="YolcuID" />
+                <ScalarProperty Name="SeferID" ColumnName="SeferID" />
+                <ScalarProperty Name="IslemZamani" ColumnName="IslemZamani" />
+                <ScalarProperty Name="KoltukNo" ColumnName="KoltukNo" />
+                <ScalarProperty Name="YolcuCinsiyet" ColumnName="YolcuCinsiyet" />
+                <ScalarProperty Name="YolcuAd" ColumnName="YolcuAd" />
+                <ScalarProperty Name="YolcuSoyad" ColumnName="YolcuSoyad" />
+                <ScalarProperty Name="Ucret" ColumnName="Ucret" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Calisanlars">
+            <EntityTypeMapping TypeName="OtobusModel.Calisanlar">
+              <MappingFragment StoreEntitySet="Calisanlar">
+                <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="CalisanTipID" ColumnName="CalisanTipID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CalisanTipleris">
+            <EntityTypeMapping TypeName="OtobusModel.CalisanTipleri">
+              <MappingFragment StoreEntitySet="CalisanTipleri">
+                <ScalarProperty Name="CalisanTipID" ColumnName="CalisanTipID" />
+                <ScalarProperty Name="CalisanTipAdi" ColumnName="CalisanTipAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="OtobusModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Adı" ColumnName="Adı" />
+                <ScalarProperty Name="Soyadı" ColumnName="Soyadı" />
+                <ScalarProperty Name="PIN" ColumnName="PIN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Markalars">
+            <EntityTypeMapping TypeName="OtobusModel.Markalar">
+              <MappingFragment StoreEntitySet="Markalar">
+                <ScalarProperty Name="MarkaId" ColumnName="MarkaId" />
+                <ScalarProperty Name="MarkaAdi" ColumnName="MarkaAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Musterilers">
+            <EntityTypeMapping TypeName="OtobusModel.Musteriler">
+              <MappingFragment StoreEntitySet="Musteriler">
+                <ScalarProperty Name="MusteriID" ColumnName="MusteriID" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Cinsiyet" ColumnName="Cinsiyet" />
+                <ScalarProperty Name="SehirID" ColumnName="SehirID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Otobuslers">
+            <EntityTypeMapping TypeName="OtobusModel.Otobusler">
+              <MappingFragment StoreEntitySet="Otobusler">
+                <ScalarProperty Name="OtobusID" ColumnName="OtobusID" />
+                <ScalarProperty Name="Plaka" ColumnName="Plaka" />
+                <ScalarProperty Name="KoltukSayisi" ColumnName="KoltukSayisi" />
+                <ScalarProperty Name="MarkaID" ColumnName="MarkaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seferlers">
+            <EntityTypeMapping TypeName="OtobusModel.Seferler">
+              <MappingFragment StoreEntitySet="Seferler">
+                <ScalarProperty Name="SeferID" ColumnName="SeferID" />
+                <ScalarProperty Name="KalkisSehirID" ColumnName="KalkisSehirID" />
+                <ScalarProperty Name="VarisSehirID" ColumnName="VarisSehirID" />
+                <ScalarProperty Name="OtobusID" ColumnName="OtobusID" />
+                <ScalarProperty Name="SoforID" ColumnName="SoforID" />
+                <ScalarProperty Name="MuavinID" ColumnName="MuavinID" />
+                <ScalarProperty Name="KalkisZamani" ColumnName="KalkisZamani" />
+                <ScalarProperty Name="TahminiSure" ColumnName="TahminiSure" />
+                <ScalarProperty Name="BiletTutari" ColumnName="BiletTutari" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sehirlers">
+            <EntityTypeMapping TypeName="OtobusModel.Sehirler">
+              <MappingFragment StoreEntitySet="Sehirler">
+                <ScalarProperty Name="SehirID" ColumnName="SehirID" />
+                <ScalarProperty Name="SehirAdi" ColumnName="SehirAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

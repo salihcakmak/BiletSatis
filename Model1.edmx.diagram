@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8ed2fb53799c456f8bc3cc63cfc2e063" Name="Diagram1">
+        <EntityTypeShape EntityType="OtobusModel.Biletler" Width="1.5" PointX="5.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Calisanlar" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.CalisanTipleri" Width="1.5" PointX="1.5" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Login" Width="1.5" PointX="7.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Markalar" Width="1.5" PointX="1.5" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Musteriler" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Otobusler" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Seferler" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OtobusModel.Sehirler" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="OtobusModel.FK_Biletler_musteriler" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Biletler_seferler" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Calisanlar_calisantipleri" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Seferler_calisanlar" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Seferler_calisanlar1" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Otobusler_markalar" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Musteriler_sehirler" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Seferler_otobusler" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Seferler_sehirler" ManuallyRouted="false" />
+        <AssociationConnector Association="OtobusModel.FK_Seferler_sehirler1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
